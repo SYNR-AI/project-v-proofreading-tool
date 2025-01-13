@@ -1,7 +1,13 @@
 {
   "git": {
-      "deploymentEnabled": {
-          "master": false
-      }
-  }
+    "deploymentEnabled": {
+      "master": false
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/((?!api/|assets/|.*\\.[^/]*$).*)",
+      "destination": "/index.html"
+    }
+  ]
 }

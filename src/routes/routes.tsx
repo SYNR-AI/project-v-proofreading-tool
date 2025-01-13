@@ -12,10 +12,6 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        index: true,
-        element: <PageWrapper title="首页"><Home /></PageWrapper>,
-      },
-      {
         path: 'story/:story_id/:num',
         element: <PageWrapper title="Story Episode"><StoryEpisode /></PageWrapper>,
       },
