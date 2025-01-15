@@ -1,7 +1,6 @@
 import reactLogo from '@/assets/react.svg'
 import viteLogo from '@/assets/vite.svg'
 import styles from '@/pages/Home.module.scss'
-import TodoList from '@/components/TodoList/TodoList';
 import Settings from '@/components/Settings/Settings';
 import useAppState from '@/stores/AppState';
 import useCounterStore from '@/stores/counter';
@@ -53,7 +52,6 @@ function Home() {
         <CounterDisplay />
         <CounterButtons />
       </div>
-      <TodoList />
       <Settings />
       <div>
         <h1>User: {user.name}</h1>

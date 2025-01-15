@@ -2,7 +2,6 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
 import useCounterStore from './stores/counter';
-import TodoList from './components/TodoList/TodoList';
 import Settings from './components/Settings/Settings';
 import useAppState from './stores/AppState';
 
@@ -42,7 +41,6 @@ function App() {
         <CounterDisplay />
         <CounterButtons />
       </div>
-      <TodoList />
       <Settings />
       <div>
         <h1>User: {user.name}</h1>

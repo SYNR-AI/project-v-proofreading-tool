@@ -349,7 +349,7 @@ const StoryEpisode = () => {
       </Modal>
 
       <Table
-        columns={columns}
+        columns={columns as any}
         dataSource={data}
         pagination={false}
         scroll={{ x: 'max-content' }}

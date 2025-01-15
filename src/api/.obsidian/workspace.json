@@ -11,14 +11,10 @@
             "id": "73b8c1f4ec48016f",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Models/ProofreadUpdateMessageReq.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "ProofreadUpdateMessageReq"
+              "title": "新标签页"
             }
           }
         ]
@@ -165,8 +161,40 @@
   "active": "73b8c1f4ec48016f",
   "lastOpenFiles": [
     "Apis/ProofreadHandlerApi.md",
-    "Models/ProofreadPostEpisodeReq.md",
-    "Models/ImportProofreadResp.md",
-    "Apis/AuthHandlerApi.md"
+    "apis/index.ts",
+    "apis/ProofreadHandlerApi.ts",
+    "apis/ProofreadHandlerApi.md",
+    "apis/AuthHandlerApi.ts",
+    "apis/AuthHandlerApi.md",
+    "apis",
+    "Models/ProofreadUpdateMessageReq.md",
+    "models/index.ts",
+    "models/Story.ts",
+    "models/Story.md",
+    "models/Status.ts",
+    "models/Status.md",
+    "models/RefreshResp.ts",
+    "models/RefreshResp.md",
+    "models/RefreshReq.md",
+    "models/RefreshReq.ts",
+    "models/ProofreadUpdateMessageResp.ts",
+    "models/ProofreadUpdateMessageResp.md",
+    "models/ProofreadUpdateMessageReq.md",
+    "models/ProofreadPostEpisodeResp.md",
+    "models/ProofreadPostEpisodeReq.md",
+    "models/ProofreadLoadStoryResp.md",
+    "models/ProofreadLoadStoryReq.md",
+    "models/ProofreadLoadEpisodeResp.md",
+    "models/ProofreadLoadEpisodeReq.md",
+    "models/ProofreadDeleteMessageResp.md",
+    "models/LoginResp.md",
+    "models/ProofreadDeleteMessageReq.md",
+    "models/Proofread.md",
+    "models/Message.md",
+    "models/LogoutResp.md",
+    "models/LoginReq.md",
+    "models/ImportProofreadResp.md",
+    "models/ImportProofreadReq.md",
+    "models/GoogleProtobufAny.md"
   ]
 }
