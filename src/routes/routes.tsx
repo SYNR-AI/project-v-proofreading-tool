@@ -12,7 +12,7 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: 'episode/:episode_id',
+        path: 'episode/:episode_slug',
         element: <PageWrapper title="Story Episode"><StoryEpisode /></PageWrapper>,
       },
       {

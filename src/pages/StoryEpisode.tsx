@@ -31,7 +31,21 @@ const StoryEpisode = () => {
   //   window.location.reload()
   // })
   // 添加状态来跟踪每行选中的值
-  const { episode_id } = useParams();
+  const { episode_slug } = useParams();
+
+  // 从 URL slug 中提取 episode_id
+  const getEpisodeId = (slug: string | undefined): number => {
+    if (!slug) return 0;
+    const matches = slug.match(/-(\d+)$/);
+    if (matches) {
+      return parseInt(matches[1]);
+    }
+    // 如果没有'-'，则尝试将整个slug转换为数字
+    const id = parseInt(slug);
+    return isNaN(id) ? 0 : id;
+  };
+
+  const episode_id = getEpisodeId(episode_slug);
 
   const [storyName, setStoryName] = React.useState<string>('');
   const [episodeTitle, setEpisodeTitle] = React.useState<string>('');
@@ -41,9 +55,17 @@ const StoryEpisode = () => {
   const [episodeStatus, setEpisodeStatus] = React.useState<StatusType>(StatusType.UNPUBLISHED);
 
   const fetchData = useCallback(async () => {
+    if (!episode_id) {
+      Modal.error({
+        title: '错误',
+        content: '无效的剧集ID'
+      });
+      return;
+    }
+
     const data: ProofreadLoadEpisodeResp = await proofreadHandlerApi.proofreadHandlerProofreadLoadEpisode({
       proofreadLoadEpisodeReq: {
-        episode_id: Number(episode_id)
+        episode_id: episode_id
       }
     });
     const messageList: Message[] | undefined = data.episode?.message_list;
