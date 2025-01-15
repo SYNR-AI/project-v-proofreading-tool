@@ -1,4 +1,4 @@
-# Documentation for StoryVHandler API
+# Documentation for 
 
 <a name="documentation-for-api-endpoints"></a>
 ## Documentation for API Endpoints
@@ -7,36 +7,41 @@ All URIs are relative to *http://localhost*
 
 | Class | Method | HTTP request | Description |
 |------------ | ------------- | ------------- | -------------|
-| *StoryVHandlerApi* | [**storyVHandlerGetEpisodeMessages**](Apis/StoryVHandlerApi.md#storyvhandlergetepisodemessages) | **GET** /v1/episodes/messages |  |
-*StoryVHandlerApi* | [**storyVHandlerGetStory**](Apis/StoryVHandlerApi.md#storyvhandlergetstory) | **GET** /v1/stories/get |  |
-*StoryVHandlerApi* | [**storyVHandlerRegister**](Apis/StoryVHandlerApi.md#storyvhandlerregister) | **POST** /v1/user/register |  |
-*StoryVHandlerApi* | [**storyVHandlerScanStory**](Apis/StoryVHandlerApi.md#storyvhandlerscanstory) | **GET** /v1/stories/scan |  |
-*StoryVHandlerApi* | [**storyVHandlerSendUserActionLog**](Apis/StoryVHandlerApi.md#storyvhandlersenduseractionlog) | **POST** /v1/track/user-action-log |  |
+| *AuthHandlerApi* | [**authHandlerLogin**](Apis/AuthHandlerApi.md#authhandlerlogin) | **POST** /v1/auth/login |  |
+*AuthHandlerApi* | [**authHandlerLogout**](Apis/AuthHandlerApi.md#authhandlerlogout) | **POST** /v1/auth/logout |  |
+*AuthHandlerApi* | [**authHandlerRefresh**](Apis/AuthHandlerApi.md#authhandlerrefresh) | **POST** /v1/auth/refresh |  |
+| *ProofreadHandlerApi* | [**proofreadHandlerImportProofread**](Apis/ProofreadHandlerApi.md#proofreadhandlerimportproofread) | **POST** /v1/proofread/import |  |
+*ProofreadHandlerApi* | [**proofreadHandlerProofreadLoadEpisode**](Apis/ProofreadHandlerApi.md#proofreadhandlerproofreadloadepisode) | **POST** /v1/proofread/episode/load |  |
+*ProofreadHandlerApi* | [**proofreadHandlerProofreadPostEpisode**](Apis/ProofreadHandlerApi.md#proofreadhandlerproofreadpostepisode) | **POST** /v1/proofread/episode/post |  |
+*ProofreadHandlerApi* | [**proofreadHandlerProofreadUpdateMessage**](Apis/ProofreadHandlerApi.md#proofreadhandlerproofreadupdatemessage) | **POST** /v1/proofread/message/update |  |
 
 
 <a name="documentation-for-models"></a>
 ## Documentation for Models
 
- - [AudioUri](./Models/AudioUri.md)
+ - [AuthToken](./Models/AuthToken.md)
  - [BaseResp](./Models/BaseResp.md)
- - [CharacterFace](./Models/CharacterFace.md)
+ - [Character](./Models/Character.md)
+ - [Cover](./Models/Cover.md)
  - [Episode](./Models/Episode.md)
- - [EpisodeMessage](./Models/EpisodeMessage.md)
- - [GetEpisodeMessagesResp](./Models/GetEpisodeMessagesResp.md)
- - [GetStoryResp](./Models/GetStoryResp.md)
  - [GoogleProtobufAny](./Models/GoogleProtobufAny.md)
- - [MessageAudio](./Models/MessageAudio.md)
- - [RegisterResp](./Models/RegisterResp.md)
- - [ScanStoryResp](./Models/ScanStoryResp.md)
+ - [ImportProofreadReq](./Models/ImportProofreadReq.md)
+ - [ImportProofreadResp](./Models/ImportProofreadResp.md)
+ - [LoginReq](./Models/LoginReq.md)
+ - [LoginResp](./Models/LoginResp.md)
+ - [LogoutResp](./Models/LogoutResp.md)
+ - [Message](./Models/Message.md)
+ - [Proofread](./Models/Proofread.md)
+ - [ProofreadLoadEpisodeReq](./Models/ProofreadLoadEpisodeReq.md)
+ - [ProofreadLoadEpisodeResp](./Models/ProofreadLoadEpisodeResp.md)
+ - [ProofreadPostEpisodeReq](./Models/ProofreadPostEpisodeReq.md)
+ - [ProofreadPostEpisodeResp](./Models/ProofreadPostEpisodeResp.md)
+ - [ProofreadUpdateMessageReq](./Models/ProofreadUpdateMessageReq.md)
+ - [ProofreadUpdateMessageResp](./Models/ProofreadUpdateMessageResp.md)
+ - [RefreshReq](./Models/RefreshReq.md)
+ - [RefreshResp](./Models/RefreshResp.md)
  - [Status](./Models/Status.md)
  - [Story](./Models/Story.md)
- - [StoryCharacter](./Models/StoryCharacter.md)
- - [StoryCounter](./Models/StoryCounter.md)
- - [StoryTag](./Models/StoryTag.md)
- - [UserActionExperiment](./Models/UserActionExperiment.md)
- - [UserActionLog](./Models/UserActionLog.md)
- - [UserActionLogReq](./Models/UserActionLogReq.md)
- - [UserActionLogResp](./Models/UserActionLogResp.md)
 
 
 <a name="documentation-for-authorization"></a>

@@ -31,95 +31,79 @@ import {
 /**
  * 
  * @export
- * @interface Story
+ * @interface ImportProofreadReq
  */
-export interface Story {
-    /**
-     * 
-     * @type {number}
-     * @memberof Story
-     */
-    story_id?: number;
+export interface ImportProofreadReq {
     /**
      * 
      * @type {string}
-     * @memberof Story
+     * @memberof ImportProofreadReq
      */
     story_name?: string;
     /**
      * 
      * @type {string}
-     * @memberof Story
+     * @memberof ImportProofreadReq
      */
     cover?: string;
     /**
      * 
      * @type {string}
-     * @memberof Story
-     */
-    cover_url?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Story
+     * @memberof ImportProofreadReq
      */
     bio?: string;
     /**
      * 
      * @type {Array<Character>}
-     * @memberof Story
+     * @memberof ImportProofreadReq
      */
     character_list?: Array<Character>;
     /**
      * 
      * @type {Array<Episode>}
-     * @memberof Story
+     * @memberof ImportProofreadReq
      */
     episode_list?: Array<Episode>;
 }
 
 /**
- * Check if a given object implements the Story interface.
+ * Check if a given object implements the ImportProofreadReq interface.
  */
-export function instanceOfStory(value: object): value is Story {
+export function instanceOfImportProofreadReq(value: object): value is ImportProofreadReq {
     return true;
 }
 
-export function StoryFromJSON(json: any): Story {
-    return StoryFromJSONTyped(json, false);
+export function ImportProofreadReqFromJSON(json: any): ImportProofreadReq {
+    return ImportProofreadReqFromJSONTyped(json, false);
 }
 
-export function StoryFromJSONTyped(json: any, ignoreDiscriminator: boolean): Story {
+export function ImportProofreadReqFromJSONTyped(json: any, ignoreDiscriminator: boolean): ImportProofreadReq {
     if (json == null) {
         return json;
     }
     return {
         
-        'story_id': json['story_id'] == null ? undefined : json['story_id'],
         'story_name': json['story_name'] == null ? undefined : json['story_name'],
         'cover': json['cover'] == null ? undefined : json['cover'],
-        'cover_url': json['cover_url'] == null ? undefined : json['cover_url'],
         'bio': json['bio'] == null ? undefined : json['bio'],
         'character_list': json['character_list'] == null ? undefined : ((json['character_list'] as Array<any>).map(CharacterFromJSON)),
         'episode_list': json['episode_list'] == null ? undefined : ((json['episode_list'] as Array<any>).map(EpisodeFromJSON)),
     };
 }
 
-export function StoryToJSON(json: any): Story {
-    return StoryToJSONTyped(json, false);
+export function ImportProofreadReqToJSON(json: any): ImportProofreadReq {
+    return ImportProofreadReqToJSONTyped(json, false);
 }
 
-export function StoryToJSONTyped(value?: Story | null, ignoreDiscriminator: boolean = false): any {
+export function ImportProofreadReqToJSONTyped(value?: ImportProofreadReq | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }
 
     return {
         
-        'story_id': value['story_id'],
         'story_name': value['story_name'],
         'cover': value['cover'],
-        'cover_url': value['cover_url'],
         'bio': value['bio'],
         'character_list': value['character_list'] == null ? undefined : ((value['character_list'] as Array<any>).map(CharacterToJSON)),
         'episode_list': value['episode_list'] == null ? undefined : ((value['episode_list'] as Array<any>).map(EpisodeToJSON)),

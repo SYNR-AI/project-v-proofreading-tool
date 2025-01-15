@@ -1,3 +1,4 @@
 /* tslint:disable */
 /* eslint-disable */
-export * from './StoryVHandlerApi';
+export * from './AuthHandlerApi';
+export * from './ProofreadHandlerApi';
