@@ -20,6 +20,12 @@ enum StatusType {
   PUBLISHED = 2,
 }
 
+enum MessageType {
+  NARRATION = 1,
+  DIALOGUE = 2,
+  PLAIN = 4,
+}
+
 const StoryEpisode = () => {
   // useLogin(() => {
   //   window.location.reload()
@@ -53,6 +59,7 @@ const StoryEpisode = () => {
     comment?: string;
     cover_selection?: number;
     cover_uri?: string;
+    message_type?: number;
   }) => {
     try {
       await proofreadHandlerApi.proofreadHandlerProofreadUpdateMessage({
@@ -93,7 +100,8 @@ const StoryEpisode = () => {
         message: record.editableSubtitle,
         cover_selection: value,
         cover_uri: cover?.cover_uri,
-        comment: record.comment
+        comment: record.comment,
+        message_type: record.proofread?.message_type || record.message_type
       });
     },
 
@@ -101,12 +109,37 @@ const StoryEpisode = () => {
       record.editableSubtitle = value;
     },
 
+    handleSubtitleTypeChange: (record: any, value: number) => {
+      // 更新本地状态以立即显示变化
+      setMessageList(messageList?.map(msg => {
+        if (msg.message_id === record.messageId) {
+          return {
+            ...msg,
+            proofread: {
+              ...msg.proofread || {},
+              message_type: value
+            }
+          };
+        }
+        return msg;
+      }));
+      record.message_type = value;
+      updateMessage(record.messageId, {
+        message: record.editableSubtitle,
+        cover_selection: record.coverSelection,
+        cover_uri: record.cover_uri,
+        comment: record.comment,
+        message_type: value
+      });
+    },
+
     handleSubtitleBlur: (record: any) => {
       updateMessage(record.messageId, {
         message: record.editableSubtitle,
         cover_selection: record.coverSelection,
         cover_uri: record.cover_uri,
-        comment: record.comment
+        comment: record.comment,
+        message_type: record.proofread?.message_type || record.message_type
       });
     },
 
@@ -119,7 +152,8 @@ const StoryEpisode = () => {
         message: record.editableSubtitle,
         cover_selection: record.coverSelection,
         cover_uri: record.cover_uri,
-        comment: record.comment
+        comment: record.comment,
+        message_type: record.proofread?.message_type || record.message_type
       });
     },
 
@@ -145,6 +179,7 @@ const StoryEpisode = () => {
           title: '提示',
           content: '提交成功'
         });
+        window.location.reload();
       }).catch(err => {
         Modal.error({
           title: '错误',
@@ -186,7 +221,7 @@ const StoryEpisode = () => {
       render: (text) => <div style={{ minWidth: 180 }}>{text}</div>,
     },
     {
-      title: 'Subtitle',
+      title: 'Original Subtitle',
       dataIndex: 'subtitle',
       key: 'subtitle',
       width: 250,
@@ -195,7 +230,7 @@ const StoryEpisode = () => {
       ),
     },
     {
-      title: 'Editable Subtitle',
+      title: 'Edited Subtitle',
       dataIndex: 'editableSubtitle',
       key: 'editableSubtitle',
       width: 250,
@@ -212,6 +247,22 @@ const StoryEpisode = () => {
           onChange={(e) => eventHandlers.handleSubtitleChange(record, e.target.value)}
           onBlur={() => eventHandlers.handleSubtitleBlur(record)}
         />
+      ),
+    },
+    {
+      title: 'Subtitle Type',
+      dataIndex: 'messageType',
+      key: 'messageType',
+      width: 150,
+      render: (type: number, record) => (
+        <Radio.Group
+          value={type}
+          onChange={(e) => eventHandlers.handleSubtitleTypeChange(record, e.target.value)}
+        >
+          <Radio value={MessageType.NARRATION}>narration</Radio>
+          <Radio value={MessageType.DIALOGUE}>dialogue</Radio>
+          <Radio value={MessageType.PLAIN}>plain</Radio>
+        </Radio.Group>
       ),
     },
     {
@@ -310,6 +361,7 @@ const StoryEpisode = () => {
     messageId: message.message_id,
     shotDescription: message.shot_description,
     subtitle: message.message,
+    messageType: message?.proofread?.message_type || message.message_type,
     editableSubtitle: message?.proofread?.message || message.message,
     illustration1: message.cover_list_v2?.[0],
     illustration2: message.cover_list_v2?.[1],
