@@ -43,6 +43,12 @@ export interface Proofread {
      * @memberof Proofread
      */
     comment?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof Proofread
+     */
+    message_type?: number;
 }
 
 /**
@@ -66,6 +72,7 @@ export function ProofreadFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'cover': json['cover'] == null ? undefined : json['cover'],
         'message': json['message'] == null ? undefined : json['message'],
         'comment': json['comment'] == null ? undefined : json['comment'],
+        'message_type': json['message_type'] == null ? undefined : json['message_type'],
     };
 }
 
@@ -84,6 +91,7 @@ export function ProofreadToJSONTyped(value?: Proofread | null, ignoreDiscriminat
         'cover': value['cover'],
         'message': value['message'],
         'comment': value['comment'],
+        'message_type': value['message_type'],
     };
 }
 

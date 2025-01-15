@@ -15,6 +15,11 @@ enum CoverSelectionType {
   DELETE = 3
 }
 
+enum StatusType {
+  UNPUBLISHED = 1,
+  PUBLISHED = 2,
+}
+
 const StoryEpisode = () => {
   // useLogin(() => {
   //   window.location.reload()
@@ -27,6 +32,7 @@ const StoryEpisode = () => {
   const [messageList, setMessageList] = React.useState<Message[] | undefined>([]);
   const [isNovelModalVisible, setIsNovelModalVisible] = React.useState(false);
   const [novelContent, setNovelContent] = React.useState('');
+  const [episodeStatus, setEpisodeStatus] = React.useState<StatusType>(StatusType.UNPUBLISHED);
 
   const fetchData = useCallback(async () => {
     const data: ProofreadLoadEpisodeResp = await proofreadHandlerApi.proofreadHandlerProofreadLoadEpisode({
@@ -39,6 +45,7 @@ const StoryEpisode = () => {
     setStoryName(data.story?.story_name || '');
     setEpisodeTitle(data.episode?.title || '');
     setNovelContent(data.episode?.novel || '');
+    setEpisodeStatus(data.episode?.status || StatusType.UNPUBLISHED);
   }, [episode_id]);
 
   const updateMessage = async (messageId: number, updates: {
@@ -319,9 +326,21 @@ const StoryEpisode = () => {
   return (
     <div style={{ padding: 20, width: '100vw' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-        <div style={{ fontSize: 18, fontWeight: 'bold' }}>
+        <div style={{ color: 'black', fontSize: 18, fontWeight: 'bold', display: 'flex', alignItems: 'center' }}>
           <span>{storyName}</span>
           <span style={{ fontSize: 18, color: 'gray', marginLeft: 16 }}>{episodeTitle}</span>
+          <span
+            style={{
+              marginLeft: 16,
+              padding: '4px 8px',
+              borderRadius: '4px',
+              fontSize: 14,
+              backgroundColor: episodeStatus === StatusType.PUBLISHED ? '#52c41a' : '#faad14',
+              color: 'white'
+            }}
+          >
+            {episodeStatus === StatusType.PUBLISHED ? 'PUBLISHED' : 'UNPUBLISHED'}
+          </span>
         </div>
         <div>
           <Button

@@ -55,6 +55,12 @@ export interface ProofreadUpdateMessageReq {
      * @memberof ProofreadUpdateMessageReq
      */
     comment?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProofreadUpdateMessageReq
+     */
+    message_type?: number;
 }
 
 /**
@@ -80,6 +86,7 @@ export function ProofreadUpdateMessageReqFromJSONTyped(json: any, ignoreDiscrimi
         'cover_selection': json['cover_selection'] == null ? undefined : json['cover_selection'],
         'cover_uri': json['cover_uri'] == null ? undefined : json['cover_uri'],
         'comment': json['comment'] == null ? undefined : json['comment'],
+        'message_type': json['message_type'] == null ? undefined : json['message_type'],
     };
 }
 
@@ -100,6 +107,7 @@ export function ProofreadUpdateMessageReqToJSONTyped(value?: ProofreadUpdateMess
         'cover_selection': value['cover_selection'],
         'cover_uri': value['cover_uri'],
         'comment': value['comment'],
+        'message_type': value['message_type'],
     };
 }
 
