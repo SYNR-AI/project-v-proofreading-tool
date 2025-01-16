@@ -13,13 +13,6 @@
  */
 
 import { mapValues } from '../runtime';
-import type { Cover } from './Cover';
-import {
-    CoverFromJSON,
-    CoverFromJSONTyped,
-    CoverToJSON,
-    CoverToJSONTyped,
-} from './Cover';
 import type { Proofread } from './Proofread';
 import {
     ProofreadFromJSON,
@@ -31,129 +24,121 @@ import {
 /**
  * 
  * @export
- * @interface Message
+ * @interface ProofreadCreateMessageReq
  */
-export interface Message {
+export interface ProofreadCreateMessageReq {
     /**
      * 
      * @type {number}
-     * @memberof Message
+     * @memberof ProofreadCreateMessageReq
      */
-    frame_id?: number;
+    episode_id?: number;
     /**
      * 
      * @type {number}
-     * @memberof Message
+     * @memberof ProofreadCreateMessageReq
      */
-    message_id?: number;
+    idx?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProofreadCreateMessageReq
+     */
+    subtitle?: string;
     /**
      * 
      * @type {number}
-     * @memberof Message
+     * @memberof ProofreadCreateMessageReq
      */
     message_type?: number;
     /**
      * 
      * @type {string}
-     * @memberof Message
+     * @memberof ProofreadCreateMessageReq
      */
     character?: string;
     /**
      * 
      * @type {string}
-     * @memberof Message
+     * @memberof ProofreadCreateMessageReq
      */
     shot_description?: string;
     /**
      * 
      * @type {string}
-     * @memberof Message
-     */
-    subtitle?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Message
+     * @memberof ProofreadCreateMessageReq
      */
     tts?: string;
     /**
      * 
      * @type {number}
-     * @memberof Message
+     * @memberof ProofreadCreateMessageReq
      */
     tts_duration?: number;
     /**
      * 
      * @type {Array<string>}
-     * @memberof Message
+     * @memberof ProofreadCreateMessageReq
      */
     cover_list?: Array<string>;
     /**
      * 
-     * @type {Array<Cover>}
-     * @memberof Message
-     */
-    cover_list_v2?: Array<Cover>;
-    /**
-     * 
      * @type {Proofread}
-     * @memberof Message
+     * @memberof ProofreadCreateMessageReq
      */
     proofread?: Proofread;
 }
 
 /**
- * Check if a given object implements the Message interface.
+ * Check if a given object implements the ProofreadCreateMessageReq interface.
  */
-export function instanceOfMessage(value: object): value is Message {
+export function instanceOfProofreadCreateMessageReq(value: object): value is ProofreadCreateMessageReq {
     return true;
 }
 
-export function MessageFromJSON(json: any): Message {
-    return MessageFromJSONTyped(json, false);
+export function ProofreadCreateMessageReqFromJSON(json: any): ProofreadCreateMessageReq {
+    return ProofreadCreateMessageReqFromJSONTyped(json, false);
 }
 
-export function MessageFromJSONTyped(json: any, ignoreDiscriminator: boolean): Message {
+export function ProofreadCreateMessageReqFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProofreadCreateMessageReq {
     if (json == null) {
         return json;
     }
     return {
         
-        'frame_id': json['frame_id'] == null ? undefined : json['frame_id'],
-        'message_id': json['message_id'] == null ? undefined : json['message_id'],
+        'episode_id': json['episode_id'] == null ? undefined : json['episode_id'],
+        'idx': json['idx'] == null ? undefined : json['idx'],
+        'subtitle': json['subtitle'] == null ? undefined : json['subtitle'],
         'message_type': json['message_type'] == null ? undefined : json['message_type'],
         'character': json['character'] == null ? undefined : json['character'],
         'shot_description': json['shot_description'] == null ? undefined : json['shot_description'],
-        'subtitle': json['subtitle'] == null ? undefined : json['subtitle'],
         'tts': json['tts'] == null ? undefined : json['tts'],
         'tts_duration': json['tts_duration'] == null ? undefined : json['tts_duration'],
         'cover_list': json['cover_list'] == null ? undefined : json['cover_list'],
-        'cover_list_v2': json['cover_list_v2'] == null ? undefined : ((json['cover_list_v2'] as Array<any>).map(CoverFromJSON)),
         'proofread': json['proofread'] == null ? undefined : ProofreadFromJSON(json['proofread']),
     };
 }
 
-export function MessageToJSON(json: any): Message {
-    return MessageToJSONTyped(json, false);
+export function ProofreadCreateMessageReqToJSON(json: any): ProofreadCreateMessageReq {
+    return ProofreadCreateMessageReqToJSONTyped(json, false);
 }
 
-export function MessageToJSONTyped(value?: Message | null, ignoreDiscriminator: boolean = false): any {
+export function ProofreadCreateMessageReqToJSONTyped(value?: ProofreadCreateMessageReq | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }
 
     return {
         
-        'frame_id': value['frame_id'],
-        'message_id': value['message_id'],
+        'episode_id': value['episode_id'],
+        'idx': value['idx'],
+        'subtitle': value['subtitle'],
         'message_type': value['message_type'],
         'character': value['character'],
         'shot_description': value['shot_description'],
-        'subtitle': value['subtitle'],
         'tts': value['tts'],
         'tts_duration': value['tts_duration'],
         'cover_list': value['cover_list'],
-        'cover_list_v2': value['cover_list_v2'] == null ? undefined : ((value['cover_list_v2'] as Array<any>).map(CoverToJSON)),
         'proofread': ProofreadToJSON(value['proofread']),
     };
 }

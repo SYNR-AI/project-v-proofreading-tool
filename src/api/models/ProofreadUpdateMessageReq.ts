@@ -36,7 +36,7 @@ export interface ProofreadUpdateMessageReq {
      * @type {string}
      * @memberof ProofreadUpdateMessageReq
      */
-    message?: string;
+    subtitle?: string;
     /**
      * 
      * @type {number}
@@ -61,6 +61,12 @@ export interface ProofreadUpdateMessageReq {
      * @memberof ProofreadUpdateMessageReq
      */
     message_type?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProofreadUpdateMessageReq
+     */
+    character?: string;
 }
 
 /**
@@ -82,11 +88,12 @@ export function ProofreadUpdateMessageReqFromJSONTyped(json: any, ignoreDiscrimi
         
         'episode_id': json['episode_id'] == null ? undefined : json['episode_id'],
         'message_id': json['message_id'] == null ? undefined : json['message_id'],
-        'message': json['message'] == null ? undefined : json['message'],
+        'subtitle': json['subtitle'] == null ? undefined : json['subtitle'],
         'cover_selection': json['cover_selection'] == null ? undefined : json['cover_selection'],
         'cover_uri': json['cover_uri'] == null ? undefined : json['cover_uri'],
         'comment': json['comment'] == null ? undefined : json['comment'],
         'message_type': json['message_type'] == null ? undefined : json['message_type'],
+        'character': json['character'] == null ? undefined : json['character'],
     };
 }
 
@@ -103,11 +110,12 @@ export function ProofreadUpdateMessageReqToJSONTyped(value?: ProofreadUpdateMess
         
         'episode_id': value['episode_id'],
         'message_id': value['message_id'],
-        'message': value['message'],
+        'subtitle': value['subtitle'],
         'cover_selection': value['cover_selection'],
         'cover_uri': value['cover_uri'],
         'comment': value['comment'],
         'message_type': value['message_type'],
+        'character': value['character'],
     };
 }
 

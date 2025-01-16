@@ -17,6 +17,8 @@ import * as runtime from '../runtime';
 import type {
   ImportProofreadReq,
   ImportProofreadResp,
+  ProofreadCreateMessageReq,
+  ProofreadCreateMessageResp,
   ProofreadLoadEpisodeReq,
   ProofreadLoadEpisodeResp,
   ProofreadPostEpisodeReq,
@@ -30,6 +32,10 @@ import {
     ImportProofreadReqToJSON,
     ImportProofreadRespFromJSON,
     ImportProofreadRespToJSON,
+    ProofreadCreateMessageReqFromJSON,
+    ProofreadCreateMessageReqToJSON,
+    ProofreadCreateMessageRespFromJSON,
+    ProofreadCreateMessageRespToJSON,
     ProofreadLoadEpisodeReqFromJSON,
     ProofreadLoadEpisodeReqToJSON,
     ProofreadLoadEpisodeRespFromJSON,
@@ -48,6 +54,10 @@ import {
 
 export interface ProofreadHandlerImportProofreadRequest {
     importProofreadReq: ImportProofreadReq;
+}
+
+export interface ProofreadHandlerProofreadCreateMessageRequest {
+    proofreadCreateMessageReq: ProofreadCreateMessageReq;
 }
 
 export interface ProofreadHandlerProofreadLoadEpisodeRequest {
@@ -98,6 +108,40 @@ export class ProofreadHandlerApi extends runtime.BaseAPI {
      */
     async proofreadHandlerImportProofread(requestParameters: ProofreadHandlerImportProofreadRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ImportProofreadResp> {
         const response = await this.proofreadHandlerImportProofreadRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async proofreadHandlerProofreadCreateMessageRaw(requestParameters: ProofreadHandlerProofreadCreateMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProofreadCreateMessageResp>> {
+        if (requestParameters['proofreadCreateMessageReq'] == null) {
+            throw new runtime.RequiredError(
+                'proofreadCreateMessageReq',
+                'Required parameter "proofreadCreateMessageReq" was null or undefined when calling proofreadHandlerProofreadCreateMessage().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/v1/proofread/message/create`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ProofreadCreateMessageReqToJSON(requestParameters['proofreadCreateMessageReq']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProofreadCreateMessageRespFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async proofreadHandlerProofreadCreateMessage(requestParameters: ProofreadHandlerProofreadCreateMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProofreadCreateMessageResp> {
+        const response = await this.proofreadHandlerProofreadCreateMessageRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -5,6 +5,7 @@ All URIs are relative to *http://localhost*
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
 | [**proofreadHandlerImportProofread**](ProofreadHandlerApi.md#proofreadHandlerImportProofread) | **POST** /v1/proofread/import |  |
+| [**proofreadHandlerProofreadCreateMessage**](ProofreadHandlerApi.md#proofreadHandlerProofreadCreateMessage) | **POST** /v1/proofread/message/create |  |
 | [**proofreadHandlerProofreadLoadEpisode**](ProofreadHandlerApi.md#proofreadHandlerProofreadLoadEpisode) | **POST** /v1/proofread/episode/load |  |
 | [**proofreadHandlerProofreadPostEpisode**](ProofreadHandlerApi.md#proofreadHandlerProofreadPostEpisode) | **POST** /v1/proofread/episode/post |  |
 | [**proofreadHandlerProofreadUpdateMessage**](ProofreadHandlerApi.md#proofreadHandlerProofreadUpdateMessage) | **POST** /v1/proofread/message/update |  |
@@ -25,6 +26,31 @@ All URIs are relative to *http://localhost*
 ### Return type
 
 [**ImportProofreadResp**](../Models/ImportProofreadResp.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+<a name="proofreadHandlerProofreadCreateMessage"></a>
+# **proofreadHandlerProofreadCreateMessage**
+> ProofreadCreateMessageResp proofreadHandlerProofreadCreateMessage(ProofreadCreateMessageReq)
+
+
+
+### Parameters
+
+|Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **ProofreadCreateMessageReq** | [**ProofreadCreateMessageReq**](../Models/ProofreadCreateMessageReq.md)|  | |
+
+### Return type
+
+[**ProofreadCreateMessageResp**](../Models/ProofreadCreateMessageResp.md)
 
 ### Authorization
 

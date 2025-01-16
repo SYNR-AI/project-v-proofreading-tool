@@ -11,6 +11,7 @@ All URIs are relative to *http://localhost*
 *AuthHandlerApi* | [**authHandlerLogout**](Apis/AuthHandlerApi.md#authhandlerlogout) | **POST** /v1/auth/logout |  |
 *AuthHandlerApi* | [**authHandlerRefresh**](Apis/AuthHandlerApi.md#authhandlerrefresh) | **POST** /v1/auth/refresh |  |
 | *ProofreadHandlerApi* | [**proofreadHandlerImportProofread**](Apis/ProofreadHandlerApi.md#proofreadhandlerimportproofread) | **POST** /v1/proofread/import |  |
+*ProofreadHandlerApi* | [**proofreadHandlerProofreadCreateMessage**](Apis/ProofreadHandlerApi.md#proofreadhandlerproofreadcreatemessage) | **POST** /v1/proofread/message/create |  |
 *ProofreadHandlerApi* | [**proofreadHandlerProofreadLoadEpisode**](Apis/ProofreadHandlerApi.md#proofreadhandlerproofreadloadepisode) | **POST** /v1/proofread/episode/load |  |
 *ProofreadHandlerApi* | [**proofreadHandlerProofreadPostEpisode**](Apis/ProofreadHandlerApi.md#proofreadhandlerproofreadpostepisode) | **POST** /v1/proofread/episode/post |  |
 *ProofreadHandlerApi* | [**proofreadHandlerProofreadUpdateMessage**](Apis/ProofreadHandlerApi.md#proofreadhandlerproofreadupdatemessage) | **POST** /v1/proofread/message/update |  |
@@ -32,6 +33,8 @@ All URIs are relative to *http://localhost*
  - [LogoutResp](./Models/LogoutResp.md)
  - [Message](./Models/Message.md)
  - [Proofread](./Models/Proofread.md)
+ - [ProofreadCreateMessageReq](./Models/ProofreadCreateMessageReq.md)
+ - [ProofreadCreateMessageResp](./Models/ProofreadCreateMessageResp.md)
  - [ProofreadLoadEpisodeReq](./Models/ProofreadLoadEpisodeReq.md)
  - [ProofreadLoadEpisodeResp](./Models/ProofreadLoadEpisodeResp.md)
  - [ProofreadPostEpisodeReq](./Models/ProofreadPostEpisodeReq.md)

@@ -13,6 +13,8 @@ Models/LoginResp.md
 Models/LogoutResp.md
 Models/Message.md
 Models/Proofread.md
+Models/ProofreadCreateMessageReq.md
+Models/ProofreadCreateMessageResp.md
 Models/ProofreadLoadEpisodeReq.md
 Models/ProofreadLoadEpisodeResp.md
 Models/ProofreadPostEpisodeReq.md

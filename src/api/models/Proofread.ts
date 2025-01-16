@@ -36,7 +36,7 @@ export interface Proofread {
      * @type {string}
      * @memberof Proofread
      */
-    message?: string;
+    subtitle?: string;
     /**
      * 
      * @type {string}
@@ -49,6 +49,12 @@ export interface Proofread {
      * @memberof Proofread
      */
     message_type?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Proofread
+     */
+    character?: string;
 }
 
 /**
@@ -70,9 +76,10 @@ export function ProofreadFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         
         'cover_selection': json['cover_selection'] == null ? undefined : json['cover_selection'],
         'cover': json['cover'] == null ? undefined : json['cover'],
-        'message': json['message'] == null ? undefined : json['message'],
+        'subtitle': json['subtitle'] == null ? undefined : json['subtitle'],
         'comment': json['comment'] == null ? undefined : json['comment'],
         'message_type': json['message_type'] == null ? undefined : json['message_type'],
+        'character': json['character'] == null ? undefined : json['character'],
     };
 }
 
@@ -89,9 +96,10 @@ export function ProofreadToJSONTyped(value?: Proofread | null, ignoreDiscriminat
         
         'cover_selection': value['cover_selection'],
         'cover': value['cover'],
-        'message': value['message'],
+        'subtitle': value['subtitle'],
         'comment': value['comment'],
         'message_type': value['message_type'],
+        'character': value['character'],
     };
 }
 

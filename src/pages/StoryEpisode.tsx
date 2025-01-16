@@ -1,8 +1,9 @@
 import React, { useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { Table, Radio, Button, Modal } from 'antd';
+import { Table, Radio, Button, Modal, Select } from 'antd';
 import { ProofreadHandlerApi, ProofreadLoadEpisodeResp, Message, Cover, Proofread } from '@/api'
 import { apiConfig } from '@/plugins';
+
 
 import useLogin from '@/hooks/useLogin';
 
@@ -45,6 +46,12 @@ const StoryEpisode = () => {
     return isNaN(id) ? 0 : id;
   };
 
+  const containsSupervisorURL = (slug: string | undefined): boolean => {
+    if (!slug) return false;
+    const supervisorName = 'helen';
+    return slug.toLowerCase().includes(supervisorName);
+  };
+
   const episode_id = getEpisodeId(episode_slug);
 
   const [storyName, setStoryName] = React.useState<string>('');
@@ -53,6 +60,7 @@ const StoryEpisode = () => {
   const [isNovelModalVisible, setIsNovelModalVisible] = React.useState(false);
   const [novelContent, setNovelContent] = React.useState('');
   const [episodeStatus, setEpisodeStatus] = React.useState<StatusType>(StatusType.UNPUBLISHED);
+  const [characterList, setCharacterList] = React.useState<string[]>([]);
 
   const fetchData = useCallback(async () => {
     if (!episode_id) {
@@ -74,6 +82,7 @@ const StoryEpisode = () => {
     setEpisodeTitle(data.episode?.title || '');
     setNovelContent(data.episode?.novel || '');
     setEpisodeStatus(data.episode?.status || StatusType.UNPUBLISHED);
+    setCharacterList(data.story?.character_list?.map(character => character.name || '') || []);
   }, [episode_id]);
 
   const updateMessage = async (messageId: number, updates: {
@@ -82,6 +91,7 @@ const StoryEpisode = () => {
     cover_selection?: number;
     cover_uri?: string;
     message_type?: number;
+    character?: string;
   }) => {
     try {
       await proofreadHandlerApi.proofreadHandlerProofreadUpdateMessage({
@@ -212,17 +222,45 @@ const StoryEpisode = () => {
 
     showNovelModal: () => {
       setIsNovelModalVisible(true);
-    }
+    },
+
+    handleCharacterChange: (record: any, value: string) => {
+      // 更新本地状态以立即显示变化
+      setMessageList(messageList?.map(msg => {
+        if (msg.message_id === record.messageId) {
+          return {
+            ...msg,
+            proofread: {
+              ...msg.proofread || {},
+              character: value
+            }
+          };
+        }
+        return msg;
+      }));
+
+      console.log(record)
+
+      // TODO: 判断 message type
+      updateMessage(record.messageId, {
+        message: record.editableSubtitle,
+        cover_selection: record.coverSelection,
+        cover_uri: record.cover_uri,
+        comment: record.comment,
+        message_type: record.proofread?.message_type || record.message_type,
+        character: value
+      });
+    },
   };
 
   useEffect(() => {
-
     fetchData();
 
     return () => {
       // cleanup
     };
   }, [fetchData]);
+
 
 
   // 定义列
@@ -244,31 +282,11 @@ const StoryEpisode = () => {
     },
     {
       title: 'Original Subtitle',
-      dataIndex: 'subtitle',
-      key: 'subtitle',
+      dataIndex: 'originalSubtitle',
+      key: 'originalSubtitle',
       width: 250,
       render: (text, record) => (
         <div style={{ maxWidth: 300 }}>{text}</div>
-      ),
-    },
-    {
-      title: 'Edited Subtitle',
-      dataIndex: 'editableSubtitle',
-      key: 'editableSubtitle',
-      width: 250,
-      render: (text, record) => (
-        <textarea
-          style={{
-            width: '100%',
-            height: '350px',
-            maxHeight: '350px',
-            resize: 'none',
-            overflowY: 'auto'
-          }}
-          defaultValue={text}
-          onChange={(e) => eventHandlers.handleSubtitleChange(record, e.target.value)}
-          onBlur={() => eventHandlers.handleSubtitleBlur(record)}
-        />
       ),
     },
     {
@@ -285,6 +303,45 @@ const StoryEpisode = () => {
           <Radio value={MessageType.DIALOGUE}>dialogue</Radio>
           <Radio value={MessageType.PLAIN}>plain</Radio>
         </Radio.Group>
+      ),
+    },
+    {
+      title: 'Character',
+      dataIndex: 'character',
+      key: 'character',
+      width: 120,
+      render: (_, record) => {
+        return record.messageType === MessageType.DIALOGUE ? (
+          <Select
+            style={{ width: '100%' }}
+            value={record.character}
+            onChange={(value) => eventHandlers.handleCharacterChange(record, value)}
+          >
+            {characterList.map(char => (
+              <Select.Option key={char} value={char}>{char}</Select.Option>
+            ))}
+          </Select>
+        ) : null;
+      }
+    },
+    {
+      title: 'Subtitle',
+      dataIndex: 'subtitle',
+      key: 'subtitle',
+      width: 250,
+      render: (text, record) => (
+        <textarea
+          style={{
+            width: '100%',
+            height: '350px',
+            maxHeight: '350px',
+            resize: 'none',
+            overflowY: 'auto'
+          }}
+          defaultValue={text}
+          onChange={(e) => eventHandlers.handleSubtitleChange(record, e.target.value)}
+          onBlur={() => eventHandlers.handleSubtitleBlur(record)}
+        />
       ),
     },
     {
@@ -374,7 +431,7 @@ const StoryEpisode = () => {
           onBlur={() => eventHandlers.handleCommentBlur(record)}
         />
       ),
-    },
+    }
   ];
 
   // 定义数据
@@ -382,9 +439,10 @@ const StoryEpisode = () => {
     key: message.frame_id,
     messageId: message.message_id,
     shotDescription: message.shot_description,
-    subtitle: message.message,
+    originalSubtitle: message.subtitle,
     messageType: message?.proofread?.message_type || message.message_type,
-    editableSubtitle: message?.proofread?.message || message.message,
+    character: message?.proofread?.character || message.character,
+    subtitle: message?.proofread?.subtitle || message.subtitle,
     illustration1: message.cover_list_v2?.[0],
     illustration2: message.cover_list_v2?.[1],
     illustration3: message.cover_list_v2?.[2],
@@ -423,9 +481,15 @@ const StoryEpisode = () => {
           >
             Original Script
           </Button>
-          <Button type="primary" onClick={eventHandlers.handleComplete}>
-            Complete
-          </Button>
+          {containsSupervisorURL(episode_slug) && (
+            <Button
+              type="primary"
+              onClick={eventHandlers.handleComplete}
+              disabled={episodeStatus === StatusType.PUBLISHED}
+            >
+              Complete
+            </Button>
+          )}
         </div>
       </div>
 

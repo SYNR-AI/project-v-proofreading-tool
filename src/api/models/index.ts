@@ -13,6 +13,8 @@ export * from './LoginResp';
 export * from './LogoutResp';
 export * from './Message';
 export * from './Proofread';
+export * from './ProofreadCreateMessageReq';
+export * from './ProofreadCreateMessageResp';
 export * from './ProofreadLoadEpisodeReq';
 export * from './ProofreadLoadEpisodeResp';
 export * from './ProofreadPostEpisodeReq';
