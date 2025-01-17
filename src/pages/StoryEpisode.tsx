@@ -268,7 +268,14 @@ const StoryEpisode = () => {
             }
           }
         );
-        await fetchData();
+        // 获取最新数据
+        const data: ProofreadLoadEpisodeResp = await proofreadHandlerApi.proofreadHandlerProofreadLoadEpisode({
+          proofreadLoadEpisodeReq: {
+            episode_id: episode_id
+          }
+        });
+        // 直接更新 messageList 状态
+        setMessageList(data.episode?.message_list);
       } catch (error) {
         Modal.error({
           title: '错误',
