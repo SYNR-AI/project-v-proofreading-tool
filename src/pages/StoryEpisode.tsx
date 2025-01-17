@@ -1,8 +1,9 @@
 import React, { useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { Table, Radio, Button, Modal, Select } from 'antd';
+import { Table, Radio, Button, Modal, Select, Space } from 'antd';
 import { ProofreadHandlerApi, ProofreadLoadEpisodeResp, Message, Cover, Proofread } from '@/api'
 import { apiConfig } from '@/plugins';
+import { PlusOutlined } from '@ant-design/icons';
 
 
 import useLogin from '@/hooks/useLogin';
@@ -61,6 +62,7 @@ const StoryEpisode = () => {
   const [novelContent, setNovelContent] = React.useState('');
   const [episodeStatus, setEpisodeStatus] = React.useState<StatusType>(StatusType.UNPUBLISHED);
   const [characterList, setCharacterList] = React.useState<string[]>([]);
+  const [duplicateLoading, setDuplicateLoading] = React.useState(false);
 
   const fetchData = useCallback(async () => {
     if (!episode_id) {
@@ -239,17 +241,42 @@ const StoryEpisode = () => {
         return msg;
       }));
 
-      console.log(record)
 
-      // TODO: 判断 message type
       updateMessage(record.messageId, {
         message: record.editableSubtitle,
         cover_selection: record.coverSelection,
         cover_uri: record.cover_uri,
         comment: record.comment,
-        message_type: record.proofread?.message_type || record.message_type,
+        message_type: record.proofread?.messageType || record.messageType,
         character: value
       });
+    },
+
+    handleDuplicateMessage: async (record: any, index: number) => {
+      setDuplicateLoading(true);
+      try {
+        await proofreadHandlerApi.proofreadHandlerProofreadCreateMessage(
+          {
+            proofreadCreateMessageReq: {
+              episode_id: Number(episode_id),
+              idx: record.key+1,
+              subtitle: record.subtitle,
+              message_type: record.messageType,
+              character: record.character,
+              shot_description: record.shotDescription,
+              cover_list: record.coverList,
+            }
+          }
+        );
+        await fetchData();
+      } catch (error) {
+        Modal.error({
+          title: '错误',
+          content: '复制消息失败'
+        });
+      } finally {
+        setDuplicateLoading(false);
+      }
     },
   };
 
@@ -267,11 +294,22 @@ const StoryEpisode = () => {
   const columns = [
     {
       title: '#',
-      dataIndex: 'rowNumber',
-      key: 'rowNumber',
-      fixed: 'left',
-      width: 50,
-      render: (_, __, index) => <span>{index + 1}</span>,
+      dataIndex: 'index',
+      key: 'index',
+      width: 80,
+      render: (_, record, index) => (
+        <Space>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ marginRight: 4 }}>{index + 1}</span>
+            <Button
+              type="link"
+              icon={<PlusOutlined />}
+              size="small"
+              onClick={() => eventHandlers.handleDuplicateMessage(record, index)}
+            />
+          </div>
+        </Space>
+      ),
     },
     {
       title: 'Shot Description',
@@ -298,6 +336,7 @@ const StoryEpisode = () => {
         <Radio.Group
           value={type}
           onChange={(e) => eventHandlers.handleSubtitleTypeChange(record, e.target.value)}
+          disabled={episodeStatus === StatusType.PUBLISHED}
         >
           <Radio value={MessageType.NARRATION}>narration</Radio>
           <Radio value={MessageType.DIALOGUE}>dialogue</Radio>
@@ -316,6 +355,7 @@ const StoryEpisode = () => {
             style={{ width: '100%' }}
             value={record.character}
             onChange={(value) => eventHandlers.handleCharacterChange(record, value)}
+            disabled={episodeStatus === StatusType.PUBLISHED}
           >
             {characterList.map(char => (
               <Select.Option key={char} value={char}>{char}</Select.Option>
@@ -341,6 +381,7 @@ const StoryEpisode = () => {
           defaultValue={text}
           onChange={(e) => eventHandlers.handleSubtitleChange(record, e.target.value)}
           onBlur={() => eventHandlers.handleSubtitleBlur(record)}
+          disabled={episodeStatus === StatusType.PUBLISHED}
         />
       ),
     },
@@ -350,7 +391,11 @@ const StoryEpisode = () => {
       key: 'illustration1',
       width: 300,
       render: (cover: Cover, record) => (
-        <Radio checked={record.coverSelection === CoverSelectionType.COVER && record.cover_uri === cover.cover_uri} onChange={() => eventHandlers.handleRadioChange(record, CoverSelectionType.COVER, cover)}>
+        <Radio
+          checked={record.coverSelection === CoverSelectionType.COVER && record.cover_uri === cover.cover_uri}
+          onChange={() => eventHandlers.handleRadioChange(record, CoverSelectionType.COVER, cover)}
+          disabled={episodeStatus === StatusType.PUBLISHED}
+        >
           <img src={cover.cover_url} alt="Illustration 1" style={{ width: 350 }} />
         </Radio>
       ),
@@ -361,7 +406,11 @@ const StoryEpisode = () => {
       key: 'illustration2',
       width: 300,
       render: (cover: Cover, record) => (
-        <Radio checked={record.coverSelection === CoverSelectionType.COVER && record.cover_uri === cover.cover_uri} onChange={() => eventHandlers.handleRadioChange(record, CoverSelectionType.COVER, cover)}>
+        <Radio
+          checked={record.coverSelection === CoverSelectionType.COVER && record.cover_uri === cover.cover_uri}
+          onChange={() => eventHandlers.handleRadioChange(record, CoverSelectionType.COVER, cover)}
+          disabled={episodeStatus === StatusType.PUBLISHED}
+        >
           <img src={cover.cover_url} alt="Illustration 2" style={{ width: 350 }} />
         </Radio>
       ),
@@ -372,7 +421,11 @@ const StoryEpisode = () => {
       key: 'illustration3',
       width: 300,
       render: (cover: Cover, record) => (
-        <Radio checked={record.coverSelection === CoverSelectionType.COVER && record.cover_uri === cover.cover_uri} onChange={() => eventHandlers.handleRadioChange(record, CoverSelectionType.COVER, cover)}>
+        <Radio
+          checked={record.coverSelection === CoverSelectionType.COVER && record.cover_uri === cover.cover_uri}
+          onChange={() => eventHandlers.handleRadioChange(record, CoverSelectionType.COVER, cover)}
+          disabled={episodeStatus === StatusType.PUBLISHED}
+        >
           <img src={cover.cover_url} alt="Illustration 3" style={{ width: 350 }} />
         </Radio>
       ),
@@ -383,7 +436,11 @@ const StoryEpisode = () => {
       key: 'illustration4',
       width: 300,
       render: (cover: Cover, record) => (
-        <Radio checked={record.coverSelection === CoverSelectionType.COVER && record.cover_uri === cover.cover_uri} onChange={() => eventHandlers.handleRadioChange(record, CoverSelectionType.COVER, cover)}>
+        <Radio
+          checked={record.coverSelection === CoverSelectionType.COVER && record.cover_uri === cover.cover_uri}
+          onChange={() => eventHandlers.handleRadioChange(record, CoverSelectionType.COVER, cover)}
+          disabled={episodeStatus === StatusType.PUBLISHED}
+        >
           <img src={cover.cover_url} alt="Illustration 4" style={{ width: 300 }} />
         </Radio>
       ),
@@ -394,7 +451,11 @@ const StoryEpisode = () => {
       key: 'illustration5',
       width: 100,
       render: (_, record) => (
-        <Radio checked={record.coverSelection === CoverSelectionType.BLACK_FRAME} onChange={() => eventHandlers.handleRadioChange(record, CoverSelectionType.BLACK_FRAME)}>
+        <Radio
+          checked={record.coverSelection === CoverSelectionType.BLACK_FRAME}
+          onChange={() => eventHandlers.handleRadioChange(record, CoverSelectionType.BLACK_FRAME)}
+          disabled={episodeStatus === StatusType.PUBLISHED}
+        >
           <div style={{ width: 30, height: 30, background: 'black' }} />
         </Radio>
       ),
@@ -405,7 +466,11 @@ const StoryEpisode = () => {
       key: 'deleteShot',
       width: 100,
       render: (_, record) => (
-        <Radio checked={record.coverSelection === CoverSelectionType.DELETE} onChange={() => eventHandlers.handleRadioChange(record, CoverSelectionType.DELETE)}>
+        <Radio
+          checked={record.coverSelection === CoverSelectionType.DELETE}
+          onChange={() => eventHandlers.handleRadioChange(record, CoverSelectionType.DELETE)}
+          disabled={episodeStatus === StatusType.PUBLISHED}
+        >
           <div style={{ fontSize: 30, color: 'red', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             X
           </div>
@@ -429,6 +494,7 @@ const StoryEpisode = () => {
           defaultValue={text}
           onChange={(e) => eventHandlers.handleCommentChange(record, e.target.value)}
           onBlur={() => eventHandlers.handleCommentBlur(record)}
+          disabled={episodeStatus === StatusType.PUBLISHED}
         />
       ),
     }
@@ -443,6 +509,7 @@ const StoryEpisode = () => {
     messageType: message?.proofread?.message_type || message.message_type,
     character: message?.proofread?.character || message.character,
     subtitle: message?.proofread?.subtitle || message.subtitle,
+    coverList: message.cover_list_v2?.map(cover => cover.cover_uri),
     illustration1: message.cover_list_v2?.[0],
     illustration2: message.cover_list_v2?.[1],
     illustration3: message.cover_list_v2?.[2],
@@ -511,6 +578,17 @@ const StoryEpisode = () => {
         pagination={false}
         scroll={{ x: 'max-content' }}
         style={{ overflowX: 'auto' }}
+        loading={{
+          spinning: duplicateLoading,
+          tip: 'loading...',
+          style: {
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 1000
+          }
+        }}
       />
     </div>
   );

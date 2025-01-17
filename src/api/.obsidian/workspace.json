@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "models/Episode.md",
+                "file": "models/ProofreadCreateMessageReq.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Episode"
+              "title": "ProofreadCreateMessageReq"
             }
           }
         ]
@@ -164,10 +164,10 @@
   },
   "active": "73b8c1f4ec48016f",
   "lastOpenFiles": [
-    "models/ProofreadLoadEpisodeResp.md",
     "apis/ProofreadHandlerApi.md",
-    "models/ProofreadUpdateMessageReq.md",
     "models/Episode.md",
+    "models/ProofreadLoadEpisodeResp.md",
+    "models/ProofreadUpdateMessageReq.md",
     "Apis/ProofreadHandlerApi.md",
     "apis/index.ts",
     "apis/ProofreadHandlerApi.ts",
