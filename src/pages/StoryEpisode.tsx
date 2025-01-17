@@ -88,7 +88,7 @@ const StoryEpisode = () => {
   }, [episode_id]);
 
   const updateMessage = async (messageId: number, updates: {
-    message?: string;
+    subtitle?: string;
     comment?: string;
     cover_selection?: number;
     cover_uri?: string;
@@ -131,7 +131,7 @@ const StoryEpisode = () => {
       record.coverSelection = value;
       record.cover_uri = cover?.cover_uri;
       updateMessage(record.messageId, {
-        message: record.editableSubtitle,
+        subtitle: record.subtitle,
         cover_selection: value,
         cover_uri: cover?.cover_uri,
         comment: record.comment,
@@ -140,7 +140,7 @@ const StoryEpisode = () => {
     },
 
     handleSubtitleChange: (record: any, value: string) => {
-      record.editableSubtitle = value;
+      record.subtitle = value;
     },
 
     handleSubtitleTypeChange: (record: any, value: number) => {
@@ -157,9 +157,10 @@ const StoryEpisode = () => {
         }
         return msg;
       }));
-      record.message_type = value;
+      record.messageType = value;
+      console.log(record)
       updateMessage(record.messageId, {
-        message: record.editableSubtitle,
+        subtitle: record.subtitle,
         cover_selection: record.coverSelection,
         cover_uri: record.cover_uri,
         comment: record.comment,
@@ -169,7 +170,7 @@ const StoryEpisode = () => {
 
     handleSubtitleBlur: (record: any) => {
       updateMessage(record.messageId, {
-        message: record.editableSubtitle,
+        subtitle: record.subtitle,
         cover_selection: record.coverSelection,
         cover_uri: record.cover_uri,
         comment: record.comment,
@@ -183,7 +184,7 @@ const StoryEpisode = () => {
 
     handleCommentBlur: (record: any) => {
       updateMessage(record.messageId, {
-        message: record.editableSubtitle,
+        subtitle: record.subtitle,
         cover_selection: record.coverSelection,
         cover_uri: record.cover_uri,
         comment: record.comment,
@@ -243,7 +244,7 @@ const StoryEpisode = () => {
 
 
       updateMessage(record.messageId, {
-        message: record.editableSubtitle,
+        subtitle: record.subtitle,
         cover_selection: record.coverSelection,
         cover_uri: record.cover_uri,
         comment: record.comment,
@@ -376,21 +377,25 @@ const StoryEpisode = () => {
       dataIndex: 'subtitle',
       key: 'subtitle',
       width: 250,
-      render: (text, record) => (
-        <textarea
-          style={{
-            width: '100%',
-            height: '350px',
-            maxHeight: '350px',
-            resize: 'none',
-            overflowY: 'auto'
-          }}
-          defaultValue={text}
-          onChange={(e) => eventHandlers.handleSubtitleChange(record, e.target.value)}
-          onBlur={() => eventHandlers.handleSubtitleBlur(record)}
-          disabled={episodeStatus === StatusType.PUBLISHED}
-        />
-      ),
+      render: (text, record) => {
+        const isDisabled = episodeStatus === StatusType.PUBLISHED || record.messageType === MessageType.PLAIN;
+        return (
+          <textarea
+            style={{
+              width: '100%',
+              height: '350px',
+              maxHeight: '350px',
+              resize: 'none',
+              overflowY: 'auto',
+              opacity: isDisabled ? 0.5 : 1
+            }}
+            defaultValue={text}
+            onChange={(e) => eventHandlers.handleSubtitleChange(record, e.target.value)}
+            onBlur={() => eventHandlers.handleSubtitleBlur(record)}
+            disabled={isDisabled}
+          />
+        );
+      },
     },
     {
       title: 'Illustration 1',
