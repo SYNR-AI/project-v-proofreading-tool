@@ -300,27 +300,39 @@ const StoryEpisode = () => {
     handleDuplicateMessage: async (record: any, index: number) => {
       setDuplicateLoading(true)
       try {
+        const message = messageList?.[index]
+        if (!message) {
+          Modal.error({
+            title: '错误',
+            content: '复制消息失败',
+          })
+          return
+        }
         await proofreadHandlerApi.proofreadHandlerProofreadCreateMessage({
           proofreadCreateMessageReq: {
             episode_id: Number(episode_id),
-            idx: record.key + 1,
-            subtitle: record.originalSubtitle,
-            message_type: record.messageType,
-            character: record.character,
-            shot_description: record.shotDescription,
-            cover_list: record.coverList,
+            idx: (message?.frame_id || 0) + 1,
+            subtitle: message?.subtitle,
+            message_type: message?.message_type,
+            character: message.character,
+            shot_description: message?.shot_description,
+            cover_list: message?.cover_list_v2?.map((cover) => cover.cover_uri).filter((uri): uri is string => !!uri),
           },
         })
-        // 获取最新数据
+
         const data: ProofreadLoadEpisodeResp =
-          await proofreadHandlerApi.proofreadHandlerProofreadLoadEpisode({
-            proofreadLoadEpisodeReq: {
-              episode_id: episode_id,
-            },
-          })
-        // 直接更新 messageList 状态
-        // setMessageList(data.episode?.message_list)
-        window.location.reload()
+        await proofreadHandlerApi.proofreadHandlerProofreadLoadEpisode({
+          proofreadLoadEpisodeReq: {
+            episode_id: episode_id,
+          },
+        })
+        const newMessageList = [...(data.episode?.message_list || [])]
+        setMessageList(newMessageList)
+
+        // 保存要滚动到的记录的 idx
+        // sessionStorage.setItem('scrollToIdx', String(record.key + 1))
+        // window.location.reload()
+
       } catch (error) {
         Modal.error({
           title: '错误',
@@ -334,10 +346,6 @@ const StoryEpisode = () => {
 
   useEffect(() => {
     fetchData()
-
-    return () => {
-      // cleanup
-    }
   }, [fetchData])
 
   // 定义列
@@ -635,24 +643,27 @@ const StoryEpisode = () => {
   ]
 
   // 定义数据
-  const data = messageList?.map((message, index) => ({
-    key: message.frame_id,
-    messageId: message.message_id,
-    shotDescription: message.shot_description,
-    originalSubtitle: message.subtitle,
-    messageType: message?.proofread?.message_type || message.message_type,
-    character: message?.proofread?.character || message.character,
-    subtitle: message?.proofread?.subtitle || message.subtitle,
-    coverList: message.cover_list_v2?.map((cover) => cover.cover_uri),
-    illustration1: message.cover_list_v2?.[0],
-    illustration2: message.cover_list_v2?.[1],
-    illustration3: message.cover_list_v2?.[2],
-    illustration4: message.cover_list_v2?.[3],
-    illustration5: message.cover_list_v2?.[4],
-    comment: message?.proofread?.comment || '',
-    coverSelection: message?.proofread?.cover_selection || undefined,
-    cover_uri: message?.proofread?.cover || '',
-  }))
+  const data = messageList?.map((message, index) => {
+    const msg = { ...message }
+    return {
+      key: msg.frame_id,
+      messageId: msg.message_id,
+      shotDescription: msg.shot_description,
+      originalSubtitle: msg.subtitle,
+      messageType: msg?.proofread?.message_type || msg.message_type,
+      character: msg?.proofread?.character || msg.character,
+      subtitle: msg?.proofread?.subtitle || msg.subtitle,
+      coverList: msg.cover_list_v2?.map((cover) => cover.cover_uri),
+      illustration1: msg.cover_list_v2?.[0],
+      illustration2: msg.cover_list_v2?.[1],
+      illustration3: msg.cover_list_v2?.[2],
+      illustration4: msg.cover_list_v2?.[3],
+      illustration5: msg.cover_list_v2?.[4],
+      comment: msg?.proofread?.comment || '',
+      coverSelection: msg?.proofread?.cover_selection || undefined,
+      cover_uri: msg?.proofread?.cover || '',
+    }
+  })
 
   console.log(data)
 
@@ -670,7 +681,6 @@ const StoryEpisode = () => {
           style={{
             display: 'flex',
             alignItems: 'center',
-            color: 'black',
           }}
           className="typography-title-1"
         >
@@ -745,6 +755,7 @@ const StoryEpisode = () => {
       {contextHolder}
 
       <Table
+        rowKey="key"
         columns={columns as any}
         dataSource={data}
         pagination={false}
