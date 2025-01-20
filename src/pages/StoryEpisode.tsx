@@ -755,7 +755,7 @@ const StoryEpisode = () => {
       {contextHolder}
 
       <Table
-        rowKey="key"
+        rowKey="messageId"
         columns={columns as any}
         dataSource={data}
         pagination={false}
